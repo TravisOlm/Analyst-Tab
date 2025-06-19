@@ -20,6 +20,10 @@ def safe_get_info(ticker_symbol, max_retries=5, delay=1):
             else:
                 raise
         except Exception as e:
+            if "401" in str(e):
+                print(f"[Retry {attempt+1}] HTTP 401 error for {ticker_symbol}, retrying...")
+                time.sleep(delay)
+                continue
             print(f"[Retry {attempt+1}] Unexpected error: {e}, retrying...")
             time.sleep(delay)
 
